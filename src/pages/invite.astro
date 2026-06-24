@@ -77,9 +77,9 @@ const worriedGif = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
           />
         </div>
         <div class="pill-row" style="justify-content:center;">
-          <button class="button button-primary" type="button" data-answer="yes">Yes</button>
+          <button class="button button-primary" type="button" data-yes-button>Yes</button>
           <span class="playful-stage" aria-label="No button area">
-            <button class="button button-secondary playful-no" type="button" data-answer="no" data-no-button>
+            <button class="button button-secondary playful-no" type="button" data-no-button>
               <span data-no-label>No</span>
             </button>
           </span>
@@ -160,7 +160,7 @@ const worriedGif = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
     const inviteVisual = document.querySelector('[data-invite-visual]');
     const noButton = document.querySelector('[data-no-button]');
     const noLabel = document.querySelector('[data-no-label]');
-    const yesButton = document.querySelector('[data-answer="yes"]');
+    const yesButton = document.querySelector('[data-yes-button]');
     let noDodges = 0;
 
     const setProgress = (stepNumber) => {
@@ -219,6 +219,22 @@ const worriedGif = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
       }
     };
 
+    const handleYes = () => {
+      state.answer = 'yes';
+      if (inviteVisual) {
+        inviteVisual.src = positiveGif;
+      }
+      resetNoButton();
+      showStep(2);
+      document.querySelector('[data-step="2"]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      syncSummary();
+    };
+
+    const handleNo = (event) => {
+      event?.preventDefault?.();
+      dodgeNoButton();
+    };
+
     const showStep = (stepNumber) => {
       document.querySelectorAll('[data-step]').forEach((section) => {
         section.classList.toggle('hidden', Number(section.dataset.step) !== stepNumber);
@@ -251,47 +267,25 @@ const worriedGif = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
       });
     };
 
-    document.querySelectorAll('[data-answer]').forEach((button) => {
-      button.addEventListener('click', () => {
-        if (button.dataset.answer === 'no') {
-          dodgeNoButton();
-          return;
-        }
-        state.answer = button.dataset.answer;
-        if (state.answer === 'yes') {
-          if (inviteVisual) {
-            inviteVisual.src = positiveGif;
-          }
-          resetNoButton();
-          showStep(2);
-        } else {
-          const followup = document.querySelector('[data-followup]');
-          followup?.classList.remove('hidden');
-          followup?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      });
+    yesButton?.addEventListener('click', (event) => {
+      event.preventDefault();
+      handleYes();
     });
 
     noButton?.addEventListener('pointerenter', dodgeNoButton);
-    noButton?.addEventListener('click', (event) => {
-      event.preventDefault();
-      dodgeNoButton();
-    });
+    noButton?.addEventListener('click', handleNo);
 
     document.querySelectorAll('[data-final-answer]').forEach((button) => {
       button.addEventListener('click', () => {
         state.answer = button.dataset.finalAnswer;
         if (state.answer === 'yes') {
-          if (inviteVisual) {
-            inviteVisual.src = positiveGif;
-          }
-          resetNoButton();
-          showStep(2);
-          document.querySelector('[data-step="2"]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          handleYes();
         } else {
+          if (inviteVisual) {
+            inviteVisual.src = worriedGif;
+          }
           showStep(5);
         }
-        syncSummary();
       });
     });
 
