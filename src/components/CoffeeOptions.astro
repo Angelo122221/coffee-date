@@ -1,0 +1,18 @@
+---
+const options = [
+  { label: 'Cozy Cafe', value: 'cozy_cafe', icon: '☕' },
+  { label: 'Coffee + Walk', value: 'coffee_walk', icon: '🚶' },
+  { label: 'Study Date', value: 'study_date', icon: '📚' },
+  { label: 'Dessert & Coffee', value: 'dessert_coffee', icon: '🍰' },
+  { label: 'Custom', value: 'custom', icon: '✍️' },
+  { label: 'Surprise Me', value: 'surprise_me', icon: '🎁' }
+];
+---
+
+<div class="pill-row" data-coffee-options>
+  {options.map((option) => (
+    <button class="pill" type="button" data-option={option.value}>
+      <span>{option.icon}</span> {option.label}
+    </button>
+  ))}
+</div>

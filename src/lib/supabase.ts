@@ -1,0 +1,20 @@
+type SupabaseConfig = {
+  url: string;
+  anonKey: string;
+};
+
+export function getSupabaseConfig(): SupabaseConfig | null {
+  const url = import.meta.env.PUBLIC_SUPABASE_URL;
+  const anonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!url || !anonKey) {
+    return null;
+  }
+
+  return { url, anonKey };
+}
+
+export function isSupabaseReady(): boolean {
+  return getSupabaseConfig() !== null;
+}
+

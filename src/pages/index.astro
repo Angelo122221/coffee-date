@@ -1,0 +1,16 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import Hero from '../components/Hero.astro';
+---
+
+<MainLayout title="Coffee Date Invitation" description="A romantic invitation made with Astro.">
+  <Hero
+    headline="Hi ❤️ I made this for you"
+    body="There’s one sweet thing I wanted to ask without making it feel too serious."
+    ctaHref="/invite"
+  />
+
+  <main class="container" style="padding: 0 0 40px; text-align:center;">
+    <p class="note" style="margin: 0;">A tiny page, a big question.</p>
+  </main>
+</MainLayout>

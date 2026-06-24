@@ -1,0 +1,36 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout title="Admin Dashboard" description="View date invitation submissions.">
+  <main class="page-shell">
+    <section class="container stack" style="max-width: 860px;">
+      <div class="card card-pad">
+        <span class="eyebrow">🔒 Admin</span>
+        <h1 class="title" style="font-size: clamp(2rem, 4vw, 3rem);">Submissions dashboard</h1>
+        <p class="subtitle">This page is scaffolded for a future password gate and Supabase query layer.</p>
+      </div>
+      <div class="card card-pad">
+        <table style="width:100%; border-collapse:collapse;">
+          <thead>
+            <tr style="text-align:left; color:var(--muted);">
+              <th style="padding: 12px 8px;">Response</th>
+              <th style="padding: 12px 8px;">Coffee</th>
+              <th style="padding: 12px 8px;">Availability</th>
+              <th style="padding: 12px 8px;">Photo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding: 12px 8px;">—</td>
+              <td style="padding: 12px 8px;">—</td>
+              <td style="padding: 12px 8px;">—</td>
+              <td style="padding: 12px 8px;">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</MainLayout>
+

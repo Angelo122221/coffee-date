@@ -1,0 +1,24 @@
+---
+const availableDates = ['2026-07-05', '2026-07-06', '2026-07-12', '2026-07-13'];
+---
+
+<div class="step-grid" style="gap:16px;">
+  <label class="stack" style="gap:8px;">
+    <span class="muted">Her available date</span>
+    <input name="her_available_date" type="date" class="card" style="padding:14px 16px; border:0;" />
+  </label>
+  <label class="stack" style="gap:8px;">
+    <span class="muted">Her available time</span>
+    <input name="her_available_time" type="time" class="card" style="padding:14px 16px; border:0;" />
+  </label>
+  <div class="stack" style="gap:10px;">
+    <span class="muted">My available dates</span>
+    <div class="pill-row" data-date-picker>
+      {availableDates.map((date) => (
+        <button class="pill" type="button" data-date={date}>{date}</button>
+      ))}
+    </div>
+    <input type="hidden" name="my_selected_date" data-selected-date />
+  </div>
+</div>
+
