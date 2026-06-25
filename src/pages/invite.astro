@@ -67,7 +67,7 @@ const worriedGif = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
 
       <ProgressBar current={1} total={5} />
 
-      <div data-intro-card>
+      <section data-step="1">
         <QuestionCard title="Would you like to go on a coffee date with me?">
           <div slot="media" class="stack" style="gap:12px; place-items:center;">
             <img
@@ -86,7 +86,7 @@ const worriedGif = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
             </span>
           </div>
         </QuestionCard>
-      </div>
+      </section>
 
       <section class="card card-pad hidden" data-followup>
         <div class="stack" style="gap:16px;">
@@ -160,10 +160,8 @@ const worriedGif = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
     const progressPercent = document.querySelector('[data-progress-percent]');
     const progressFill = document.querySelector('[data-progress-fill]');
     const inviteVisual = document.querySelector('[data-invite-visual]');
-    const introCard = document.querySelector('[data-intro-card]');
     const noButton = document.querySelector('[data-no-button]');
     const noLabel = document.querySelector('[data-no-label]');
-    const yesButton = document.querySelector('[data-yes-button]');
     let noDodges = 0;
 
     const setProgress = (stepNumber) => {
@@ -228,9 +226,6 @@ const worriedGif = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
         inviteVisual.src = positiveGif;
       }
       resetNoButton();
-      if (introCard) {
-        introCard.classList.add('hidden');
-      }
       showStep(2);
       document.querySelector('[data-step="2"]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       syncSummary();
@@ -273,17 +268,30 @@ const worriedGif = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
       });
     };
 
-    yesButton?.addEventListener('click', (event) => {
-      event.preventDefault();
-      handleYes();
-    });
+    document.addEventListener('click', (event) => {
+      const yesTrigger = event.target.closest('[data-yes-button]');
+      if (yesTrigger) {
+        event.preventDefault();
+        handleYes();
+        return;
+      }
 
-    noButton?.addEventListener('pointerenter', dodgeNoButton);
-    noButton?.addEventListener('click', handleNo);
+      const noTrigger = event.target.closest('[data-no-button]');
+      if (noTrigger) {
+        handleNo(event);
+      }
 
-    document.querySelectorAll('[data-final-answer]').forEach((button) => {
-      button.addEventListener('click', () => {
-        state.answer = button.dataset.finalAnswer;
+      const customDoneTrigger = event.target.closest('[data-custom-done]');
+      if (customDoneTrigger) {
+        event.preventDefault();
+        showStep(3);
+        syncSummary();
+        return;
+      }
+
+      const finalAnswerTrigger = event.target.closest('[data-final-answer]');
+      if (finalAnswerTrigger) {
+        state.answer = finalAnswerTrigger.dataset.finalAnswer;
         if (state.answer === 'yes') {
           handleYes();
         } else {
@@ -292,8 +300,12 @@ const worriedGif = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
           }
           showStep(5);
         }
-      });
+        syncSummary();
+      }
     });
+
+    noButton?.addEventListener('pointerenter', dodgeNoButton);
+    noButton?.addEventListener('pointermove', dodgeNoButton);
 
     document.querySelectorAll('[data-option]').forEach((button) => {
       button.addEventListener('click', () => {
@@ -312,11 +324,6 @@ const worriedGif = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
         }
         syncSummary();
       });
-    });
-
-    document.querySelector('[data-custom-done]')?.addEventListener('click', () => {
-      showStep(3);
-      syncSummary();
     });
 
     document.querySelectorAll('[data-date]').forEach((button) => {
@@ -358,6 +365,7 @@ const worriedGif = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
       syncSummary();
     });
 
+    showStep(1);
     syncSummary();
   </script>
 </MainLayout>
