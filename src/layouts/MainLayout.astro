@@ -25,6 +25,14 @@ const { title, description = 'Coffee Date Invitation' } = Astro.props as Props;
   </head>
   <body>
     <slot />
+    <script is:inline>
+      const pingKeepalive = () => {
+        fetch('/api/keepalive', { cache: 'no-store' }).catch(() => {});
+      };
+
+      pingKeepalive();
+      const keepaliveTimer = window.setInterval(pingKeepalive, 10 * 60 * 1000);
+      window.addEventListener('beforeunload', () => window.clearInterval(keepaliveTimer));
+    </script>
   </body>
 </html>
-

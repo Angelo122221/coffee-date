@@ -66,3 +66,25 @@ export async function uploadPhotoToSupabase(file: File) {
 
   return `${config.url}/storage/v1/object/public/photos/${safeName}`;
 }
+
+export async function pingSupabaseHealth() {
+  const config = getSupabaseConfig();
+
+  if (!config) {
+    return { ok: false, message: 'Missing Supabase environment variables.' };
+  }
+
+  const response = await fetch(`${config.url}/auth/v1/health`, {
+    headers: {
+      apikey: config.anonKey,
+      Authorization: `Bearer ${config.anonKey}`
+    }
+  });
+
+  if (!response.ok) {
+    const message = await response.text();
+    throw new Error(`Supabase health ping failed: ${message}`);
+  }
+
+  return { ok: true };
+}
