@@ -67,24 +67,26 @@ const worriedGif = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
 
       <ProgressBar current={1} total={5} />
 
-      <QuestionCard title="Would you like to go on a coffee date with me?">
-        <div slot="media" class="stack" style="gap:12px; place-items:center;">
-          <img
-            src={positiveGif}
-            alt="Cute coffee animation"
-            class="hero-image gif-compact"
-            data-invite-visual
-          />
-        </div>
-        <div class="pill-row" style="justify-content:center;">
-          <button class="button button-primary" type="button" data-yes-button>Yes</button>
-          <span class="playful-stage" aria-label="No button area">
-            <button class="button button-secondary playful-no" type="button" data-no-button>
-              <span data-no-label>No</span>
-            </button>
-          </span>
-        </div>
-      </QuestionCard>
+      <div data-intro-card>
+        <QuestionCard title="Would you like to go on a coffee date with me?">
+          <div slot="media" class="stack" style="gap:12px; place-items:center;">
+            <img
+              src={positiveGif}
+              alt="Cute coffee animation"
+              class="hero-image gif-compact"
+              data-invite-visual
+            />
+          </div>
+          <div class="pill-row" style="justify-content:center;">
+            <button class="button button-primary" type="button" data-yes-button>Yes</button>
+            <span class="playful-stage" aria-label="No button area">
+              <button class="button button-secondary playful-no" type="button" data-no-button>
+                <span data-no-label>No</span>
+              </button>
+            </span>
+          </div>
+        </QuestionCard>
+      </div>
 
       <section class="card card-pad hidden" data-followup>
         <div class="stack" style="gap:16px;">
@@ -158,6 +160,7 @@ const worriedGif = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
     const progressPercent = document.querySelector('[data-progress-percent]');
     const progressFill = document.querySelector('[data-progress-fill]');
     const inviteVisual = document.querySelector('[data-invite-visual]');
+    const introCard = document.querySelector('[data-intro-card]');
     const noButton = document.querySelector('[data-no-button]');
     const noLabel = document.querySelector('[data-no-label]');
     const yesButton = document.querySelector('[data-yes-button]');
@@ -225,6 +228,9 @@ const worriedGif = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
         inviteVisual.src = positiveGif;
       }
       resetNoButton();
+      if (introCard) {
+        introCard.classList.add('hidden');
+      }
       showStep(2);
       document.querySelector('[data-step="2"]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       syncSummary();
